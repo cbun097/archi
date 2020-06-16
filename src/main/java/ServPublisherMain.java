@@ -1,3 +1,5 @@
+package main.java;
+
 import com.sun.istack.internal.NotNull;
 
 import javax.ws.rs.*;
@@ -11,9 +13,9 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServPublisherMain {
-//    boolean isbnValide; // True -> trouver dans openLibrary, False -> pas trouver
-//    boolean isbnDisponible; // True -> trouver dans le cataogue, False -> existe pas
-//    String urlInfo; // === url-info du service, "Document introuvable selon OpenLibrary
+    boolean isbnValide;
+    boolean isbnDisponible;
+    String urlInfo;
 
     // The Java method will process HTTP GET requests
     @GET
@@ -26,19 +28,40 @@ public class ServPublisherMain {
 
     /** Méthode getBook qui fait la recherche de l'ISBN dans le service API de Open Library */
     @GET
-    @Path("/{isbn}")
+    @Path("/get")
     public Response getBook(@NotNull @QueryParam("isbn") String isbn){
         Client client = ClientBuilder.newClient();
         Response queryResponse = client.target("http://openlibrary.org/api/books")
-                .queryParam("bibkeys", "ISBN:" + isbn)
-                .queryParam("format", "json")
-                .queryParam("jscmd", "data")
-                .request()
-                .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
+                    .queryParam("bibkeys", "ISBN:" + isbn)
+                    .request()
+                    .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
         return queryResponse;
     }
 
-    /** Méthode qui vérifie le nombre d'item dans le catalogue */
-    public void getIsbnDisponible(){}
+    /** Méthode qui vérifie le nombre d'item dans le catalogue
+     * True -> trouver dans le catalogue
+     * False -> existe pas  */
+    public void getIsbnDisponible(){
+
+    }
+
+    /** Methode getIsbnValide, vérifie si le livre existe dans le service Open Library
+     * False: l'objet revient empty
+     * True: l'isbn existe dans le service externe
+     */
+        public void getIsbnValide(){
+//        if(response != null && !response.isEmpty()) {
+//            !isbnValide;
+//            return "var _OLBookInfo = {}";
+//        }
+//        return false;
+    }
+
+    /** Méthode getUrlInfo, prend la clé url-info du service
+     * si existe: urlInfo === url-info du service
+     * si existe pas: error message-> Document introuvable selon OpenLibrary */
+    public void getUrlInfo() {
+
+    }
 }
 
