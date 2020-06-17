@@ -1,5 +1,3 @@
-package main.java;
-
 import com.sun.istack.internal.NotNull;
 
 import javax.ws.rs.*;
@@ -29,13 +27,14 @@ public class ServPublisherMain {
     /** Méthode getBook qui fait la recherche de l'ISBN dans le service API de Open Library */
     @GET
     @Path("/get")
-    public Response getBook(@NotNull @QueryParam("isbn") String isbn){
+    public String getBook(@NotNull @QueryParam("isbn") String isbn){
         Client client = ClientBuilder.newClient();
         Response queryResponse = client.target("http://openlibrary.org/api/books")
                     .queryParam("bibkeys", "ISBN:" + isbn)
                     .request()
                     .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
-        return queryResponse;
+
+        return queryResponse.readEntity(String.class);
     }
 
     /** Méthode qui vérifie le nombre d'item dans le catalogue
