@@ -5,6 +5,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
+import java.util.List;
 
 /** Fichier qui comprend les méthodes main du côté serveur - le service de validation ISBN */
 @Path("/validerIsbn")
@@ -33,15 +35,24 @@ public class ServPublisherMain {
                     .queryParam("bibkeys", "ISBN:" + isbn)
                     .request()
                     .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
-
-        return queryResponse.readEntity(String.class);
+        if(queryResponse != null) {
+            getIsbnDisponible(isbn);
+            isbnValide = true;
+        }
+        return queryResponse.readEntity(String.class) + getIsbnDisponible(isbn);
     }
 
     /** Méthode qui vérifie le nombre d'item dans le catalogue
      * True -> trouver dans le catalogue
      * False -> existe pas  */
-    public void getIsbnDisponible(){
-
+    public String getIsbnDisponible(String isbn){
+        String[] catalogueArray = {"9780071824552","0451526538","2729893407","0201558025","0385472579","9780980200447",
+                "0062937723","1633697223","0486659429", "9780486682525"};
+        List<String> list  = Arrays.asList(catalogueArray);
+        if(list.contains(isbn)) {
+            isbnDisponible = true;
+        }
+        return String.valueOf(isbnDisponible);
     }
 
     /** Methode getIsbnValide, vérifie si le livre existe dans le service Open Library
