@@ -12,5 +12,9 @@
   </head>
   <body>
   $END$
+  <form action="rest/validerIsbn/get?isbn={isbn}" method="post">
+    Enter ISBN:<input type="text" name="isbn"/><br/><br/>
+    <input type="submit" value="Chercher"/>
+  </form>
   </body>
 </html>

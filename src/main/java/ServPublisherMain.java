@@ -1,3 +1,4 @@
+package com.jax.rest;
 import com.sun.istack.internal.NotNull;
 
 import javax.ws.rs.*;
@@ -72,6 +73,13 @@ public class ServPublisherMain {
      * si existe pas: error message-> Document introuvable selon OpenLibrary */
     public void getUrlInfo() {
 
+    }
+
+    /** retourner la response après avoir reçu l'ibns entrée */
+    @POST
+    @Consumes("text/plain")
+    public void postHtml(String message) {
+        // Store the message
     }
 }
 
