@@ -12,7 +12,9 @@ public class MyApplication extends Application{
     @Override
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();
+        // juste un path pour tester l'application
         h.add( com.jax.rest.HelloWorld.class );
+        // ajouter la classe pour le service
         h.add( com.jax.rest.ServPublisherMain.class );
         return h;
     }
