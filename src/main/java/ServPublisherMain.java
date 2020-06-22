@@ -26,7 +26,7 @@ public class ServPublisherMain {
     public Response getBook(@NotNull @QueryParam("isbn") String isbn){
         try{
             Client client = ClientBuilder.newClient();
-            Response queryResponse = client.target("http://openlibrsdfary.org/api/books")
+            Response queryResponse = client.target("http://openlibrary.org/api/books")
                     .queryParam("bibkeys", "ISBN:" + isbn)
                     .request()
                     .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
