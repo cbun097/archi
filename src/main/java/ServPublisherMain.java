@@ -36,46 +36,49 @@ public class ServPublisherMain {
             getIsbnDisponible(isbn);
             isbnValide = true;
         }
-        return postHtml(queryResponse, isbnValide, getIsbnDisponible(isbn), urlInfo);
+        String finalResponce = queryResponse.readEntity(String.class);
+        if(getIsbnValide(finalResponce))
+            return postHtml(finalResponce, getIsbnValide(finalResponce), getIsbnDisponible(isbn), getUrlInfo(finalResponce));
+        return Response.status(200).entity("ISBN Valide: False").build();
     }
 
     /** Méthode qui vérifie le nombre d'item dans le catalogue
      * True -> trouver dans le catalogue
      * False -> existe pas  */
-    public String getIsbnDisponible(String isbn){
+    public boolean getIsbnDisponible(String isbn){
         // array du Catalogue
         String[] catalogueArray = {"9780071824552","0451526538","2729893407","0201558025","0385472579","9780980200447",
                 "0062937723","1633697223","0486659429", "9780486682525"};
         List<String> list  = Arrays.asList(catalogueArray);
         if(list.contains(isbn)) {
-            isbnDisponible = true;
+            return true;
         }
-        return String.valueOf(isbnDisponible);
+        return false;
     }
 
     /** Methode getIsbnValide, vérifie si le livre existe dans le service Open Library
      * False: l'objet revient empty
      * True: l'isbn existe dans le service externe
      */
-        public void getIsbnValide(){
-//        if(response != null && !response.isEmpty()) {
-//            !isbnValide;
-//            return "var _OLBookInfo = {}";
-//        }
-//        return false;
+    public boolean getIsbnValide(String validate){
+        validate = validate.split("\\{")[1].split("}")[0];
+        if(validate.isEmpty())
+            return false;
+        return true;
     }
 
     /** Méthode getUrlInfo, prend la clé url-info du service
      * si existe: urlInfo === url-info du service
      * si existe pas: error message-> Document introuvable selon OpenLibrary */
-    public void getUrlInfo() {
-
+    public String getUrlInfo(String url) {
+        url = url.split("\"info_url\": \"")[1].split("\"")[0];
+        return url;
     }
 
     /** retourner la response parse après avoir reçu l'isbn entrée */
     @Consumes("text/plain")
-    public Response postHtml(Response resp, Boolean valide, String disponible, String url) {
-        return Response.status(200).entity("Valeur ISBN de OpenLibrary: " + resp.readEntity(String.class) + "<br> ISBN Valide: " + valide + "<br> ISBN Disponile: " + disponible + "<br> URL_INFO: " + url).build();
+    public Response postHtml(String resp, Boolean valide, boolean disponible, String url) {
+        return Response.status(200).entity("Valeur ISBN de OpenLibrary: " + resp + "<br> ISBN Valide: " + valide + "<br> ISBN Disponile: " + disponible + "<br> URL_INFO: " + url).build();
     }
 }
 
