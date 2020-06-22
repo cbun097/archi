@@ -41,7 +41,9 @@ public class ServPublisherMain {
         }
         catch (Exception e)
         {
-            return Response.status(404).entity("une erreure c'est produit lorsque vous avez essayé d'utiliser notre service, veuiller réessayer a un autre moment.").build();
+            return Response.status(404).entity("<meta charset=\"UTF-8\">\n" +
+                    "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">\n" +
+                    "<body>une erreure c'est produit lorsque vous avez essayé d'utiliser notre service, veuiller réessayer a un autre moment.</body>").build();
         }
     }
 
