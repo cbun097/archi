@@ -12,9 +12,6 @@ import java.util.List;
 /** Fichier qui comprend les méthodes main du côté serveur - le service de validation ISBN */
 @Path("/validerIsbn")
 public class ServPublisherMain {
-    boolean isbnValide;
-    boolean isbnDisponible;
-    String urlInfo;
 
     /** Méthode qui vérifie si le path /validerisbn fonctionne */
     @GET
@@ -27,19 +24,25 @@ public class ServPublisherMain {
     @GET
     @Path("/get")
     public Response getBook(@NotNull @QueryParam("isbn") String isbn){
-        Client client = ClientBuilder.newClient();
-        Response queryResponse = client.target("http://openlibrary.org/api/books")
+        try{
+            Client client = ClientBuilder.newClient();
+            Response queryResponse = client.target("http://openlibrsdfary.org/api/books")
                     .queryParam("bibkeys", "ISBN:" + isbn)
                     .request()
                     .accept(MediaType.APPLICATION_JSON).buildGet().invoke();
-        if(queryResponse != null) {
-            getIsbnDisponible(isbn);
-            isbnValide = true;
+            if (queryResponse != null) {
+                getIsbnDisponible(isbn);
+            }
+            //converti la reponse en string
+            String finalResponce = queryResponse.readEntity(String.class);
+            if (getIsbnValide(finalResponce))
+                return postHtml(finalResponce, getIsbnValide(finalResponce), getIsbnDisponible(isbn), getUrlInfo(finalResponce));
+            return Response.status(200).entity("ISBN Valide: False").build();
         }
-        String finalResponce = queryResponse.readEntity(String.class);
-        if(getIsbnValide(finalResponce))
-            return postHtml(finalResponce, getIsbnValide(finalResponce), getIsbnDisponible(isbn), getUrlInfo(finalResponce));
-        return Response.status(200).entity("ISBN Valide: False").build();
+        catch (Exception e)
+        {
+            return Response.status(404).entity("une erreure c'est produit lorsque vous avez essayé d'utiliser notre service, veuiller réessayer a un autre moment.").build();
+        }
     }
 
     /** Méthode qui vérifie le nombre d'item dans le catalogue
