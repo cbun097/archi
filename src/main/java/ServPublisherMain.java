@@ -77,6 +77,7 @@ public class ServPublisherMain {
      * si existe pas: error message-> Document introuvable selon OpenLibrary */
     public String getUrlInfo(String url) {
         url = url.split("\"info_url\": \"")[1].split("\"")[0];
+        url = url.replace("\\u2019", "?");
         return url;
     }
 
