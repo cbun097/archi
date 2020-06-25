@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Devoir #2 - Validation ISBN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-<form action="rest/validerIsbn/get?isbn={isbn}" method="GET">
-    Entrer ISBN:<input required type="text" name="isbn"/><br/><br/>
-    <input type="submit" value="Valider"/>
-</form>
+<div class="container">
+    <form action="rest/validerIsbn/get?isbn={isbn}" method="GET">
+        <div class="form-group">
+            <label for="entrerIsbn">Entrer ISBN:</label>
+            <input required type="text" name="isbn" class="form-control" id="entrerIsbn">
+        </div>
+        <button type="submit" class="btn btn-primary" value="Valider">Valider</button>
+    </form>
+</div>
 </body>
 </html>

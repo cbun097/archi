@@ -10,15 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /** Fichier qui comprend les méthodes main du côté serveur - le service de validation ISBN */
+/** lien url pour le service de validation*/
 @Path("/validerIsbn")
 public class ServPublisherMain {
-
-    /** Méthode qui vérifie si le path /validerisbn fonctionne */
-    @GET
-    @Produces("text/plain")
-    public String getMessage() {
-        return "validate";
-    }
 
     /** Méthode getBook qui fait la recherche de l'ISBN dans le service API de Open Library */
     @GET
@@ -33,11 +27,11 @@ public class ServPublisherMain {
             if (queryResponse != null) {
                 getIsbnDisponible(isbn);
             }
-            //converti la reponse en string
+            // convertir la reponse en string
             String finalResponce = queryResponse.readEntity(String.class);
             if (getIsbnValide(finalResponce))
                 return postHtml(finalResponce, getIsbnValide(finalResponce), getIsbnDisponible(isbn), getUrlInfo(finalResponce));
-            return Response.status(200).entity("ISBN Valide: False").build();
+            return Response.status(200).entity("ISBN Valide: False <br> Document introuvable selon OpenLibrary").build();
         }
         catch (Exception e)
         {
@@ -52,7 +46,7 @@ public class ServPublisherMain {
      * True -> trouver dans le catalogue
      * False -> existe pas  */
     public boolean getIsbnDisponible(String isbn){
-        // array du Catalogue
+        // Création du array du Catalogue
         String[] catalogueArray = {"9780071824552","0451526538","2729893407","0201558025","0385472579","9780980200447",
                 "0062937723","1633697223","0486659429", "9780486682525"};
         List<String> list  = Arrays.asList(catalogueArray);
@@ -78,14 +72,13 @@ public class ServPublisherMain {
      * si existe pas: error message-> Document introuvable selon OpenLibrary */
     public String getUrlInfo(String url) {
         url = url.split("\"info_url\": \"")[1].split("\"")[0];
-        url = url.replace("\\u2019", "?");
-        return url;
+        return url.replace("\\u2019", "?");
     }
 
     /** retourner la response parse après avoir reçu l'isbn entrée */
     @Consumes("text/plain")
     public Response postHtml(String resp, Boolean valide, boolean disponible, String url) {
-        return Response.status(200).entity("Valeur ISBN de OpenLibrary: " + resp + "<br> ISBN Valide: " + valide + "<br> ISBN Disponile: " + disponible + "<br> URL_INFO: " + url).build();
+        return Response.status(200).entity("Valeur ISBN de OpenLibrary: " + resp + "<br> ISBN Valide: " + valide + "<br> ISBN Disponile: " + disponible + "<br> url-info: " + url).build();
     }
 }
 
