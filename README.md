@@ -1,8 +1,10 @@
 # Devoir #2 - INF1603
 
-> Création du service pour valider l'ISBN d'un livre en JAX-RS - Jersey et Glassfish.
+> Création d'un service pour valider l'ISBN d'un livre en JAX-RS à l'aide de l'API Open Library - Jersey et Glassfish.
 
 ## Démonstration
+
+![devoir 02 demo](demo/../achi.gif)
 
 ## Installation
 
