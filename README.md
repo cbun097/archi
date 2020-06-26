@@ -13,7 +13,17 @@
 Install Glassfish
 Open the project in IntelliJ
 Configure and run the project
-Open in your browser http://localhost:8080/devoir_glassfish_war_exploded/helloworld
+Open in your browser http://localhost:8080/devoir_glassfish_war_explode
+```
+
+## Docker
+
+```
+Install Glassfish
+./exploded_to_war.ps1
+docker build -t devoir02 .
+docker run -p 8080:8080 devoir02
+Open in your browser http://localhost:8080/devoir02
 ```
 
 ## Docs
